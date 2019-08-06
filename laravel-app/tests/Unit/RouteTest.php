@@ -19,15 +19,4 @@ class RouteTest extends TestCase
           ->assertRedirect('/login')
           ->assertSee('Redirecting to');
     }
-
-    /**
-     * Verify when authenticated that the users page comes up
-     *
-     * @return void
-     */
-    public function testAuthToUsers() {
-
-      $user = factory(User::class)->make();
-      $this->actingAs($user)->get('/users')->assertSee('Users');
-    }
 }

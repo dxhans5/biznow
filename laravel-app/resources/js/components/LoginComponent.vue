@@ -7,8 +7,8 @@
 
                   <div class="card-body">
 
-                    <div class="alert alert-danger" role="alert">
-                      {{ test }}
+                    <div v-for="error in errors" class="alert alert-danger" role="alert">
+                      {{ error | capitalize }}
                     </div>
 
 
@@ -56,23 +56,33 @@
       data: function() {
         return {
           errors: [],
-          email: null,
-          password: null
+          email: 'eve.holt@reqres.in',
+          password: 'cityslicka'
         }
       },
       methods:{
         authenticateAndLogin: function (e) {
           if (this.email && this.password) {
+            // TODO: change submit button to working spinner
             axios.post( '/login', { email: this.email, password: this.password }).then( response => {
               this.errors = [];
 
               if (response.data.error) {
                 this.errors.push(response.data.error);
+              } else if (response.data.token) {
+                window.location.href = '/users';
               }
             })
           }
 
           e.preventDefault();
+        }
+      },
+      filters: {
+        capitalize: function (value) {
+          if (!value) return ''
+          value = value.toString()
+          return value.charAt(0).toUpperCase() + value.slice(1)
         }
       }
     }

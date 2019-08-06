@@ -20,5 +20,7 @@ Route::get('/', function () {
   return redirect()->route('login');
 });
 Route::get('/login', 'AuthController@login')->name('login');
+Route::post('/logout', 'AuthController@logout')->name('logout');
 Route::post('/login', 'AuthController@authenticate')->name('authenticate');
 Route::get('/users', 'UsersController@index')->name('users');
+Route::get('/get-users', 'UsersController@getUsers')->name('get-users');
