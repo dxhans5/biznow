@@ -6,6 +6,12 @@
                   <div class="card-header">Login</div>
 
                   <div class="card-body">
+
+                    <div class="alert alert-danger" role="alert">
+                      {{ test }}
+                    </div>
+
+
                     <form
                       id="login"
                       @submit="authenticateAndLogin"
@@ -47,26 +53,23 @@
 
 <script>
     export default {
-      data: {
-        errors: [],
-        email: null,
-        password: null
+      data: function() {
+        return {
+          errors: [],
+          email: null,
+          password: null
+        }
       },
       methods:{
         authenticateAndLogin: function (e) {
           if (this.email && this.password) {
             axios.post( '/login', { email: this.email, password: this.password }).then( response => {
-                    console.log(response);
-                })
-          }
+              this.errors = [];
 
-          this.errors = [];
-
-          if (!this.email) {
-            this.errors.push('Email required.');
-          }
-          if (!this.password) {
-            this.errors.push('Password required.');
+              if (response.data.error) {
+                this.errors.push(response.data.error);
+              }
+            })
           }
 
           e.preventDefault();
