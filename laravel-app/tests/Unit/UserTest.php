@@ -26,6 +26,26 @@ class UserTest extends TestCase
     }
 
     /**
+     * A successful API user add
+     *
+     * @return void
+     */
+    public function testSuccessfulAPIUserAdd()
+    {
+        $user = new \stdClass();
+        $user->name = 'Candle Man';
+        $user->job = 'Candlemaker';
+        $user->email = 'testing@test.com';
+        $user->password = '1234567890';
+
+        $url = 'https://reqres.in/api/add';
+        $client = new Client();
+        $res = $client->post($url, [RequestOptions::JSON => ['name' => $user->name, 'job' => $user->job]]);
+        $this->assertTrue($res->getStatusCode() === 201); // 201
+        $this->assertJson($res->getBody());
+    }
+
+    /**
      * A successful user fetch
      *
      * @return void
@@ -36,5 +56,24 @@ class UserTest extends TestCase
       $this->assertTrue($res->getStatusCode() === 200);
       $this->assertTrue(array_key_exists('data', json_decode($res->getContent(), true)));
       $this->assertNotEmpty(json_decode($res->getContent(), true)['data']);
+    }
+
+    /**
+     * A successful user add
+     *
+     * @return void
+     */
+    public function testSuccessfulUserAdd()
+    {
+        $user = new \stdClass();
+        $user->name = 'Candle Man';
+        $user->job = 'Candlemaker';
+        $user->email = 'testing@test.com';
+        $user->password = '1234567890';
+
+        $res = $this->call('GET', '/add-user');
+        $this->assertTrue($res->getStatusCode() === 200);
+        $this->assertTrue(array_key_exists('data', json_decode($res->getContent(), true)));
+        $this->assertNotEmpty(json_decode($res->getContent(), true)['data']);
     }
 }

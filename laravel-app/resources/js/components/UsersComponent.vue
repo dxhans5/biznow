@@ -1,8 +1,19 @@
 <template>
   <div class="container">
+      <div v-if="addingUser">
+        <add-user-component></add-user-component>
+      </div>
+
       <div class="row justify-content-center">
         <div class="col-md-12 underline">
-          <h1>Users</h1>
+          <div class="row">
+            <div class="col-md-6">
+              <h1>Users</h1>
+            </div>
+            <div class="col-md-6 text-right">
+              <button class="btn btn-primary" v-on:click="addingUser = true">Add User</button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row justify-content-center">
@@ -38,7 +49,8 @@
       data: function() {
         return {
           errors: [],
-          users: null
+          users: null,
+          addingUser: false
         }
       },
       created: function () {
@@ -51,6 +63,6 @@
             this.users = response.data.data;
           }
         })
-      },
+      }
     }
 </script>

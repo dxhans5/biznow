@@ -29,4 +29,17 @@ class UsersController extends Controller
 
       return $res->getBody();
     }
+
+    /**
+    * Fetch users from Api
+    */
+    public function addUser(Request $request) {
+      print_r($request->all()); die();
+
+      $url = 'https://reqres.in/api/users';
+      $client = new Client();
+      $res = $client->get($url, $payload);
+
+      return $res->getBody();
+    }
 }

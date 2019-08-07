@@ -4,9 +4,12 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+import BootstrapVue from 'bootstrap-vue'  
 require('./bootstrap');
 
+
 window.Vue = require('vue');
+Vue.use(BootstrapVue)
 
 /**
  * The following block of code may be used to automatically register your
@@ -21,6 +24,7 @@ window.Vue = require('vue');
 
 Vue.component('login-component', require('./components/LoginComponent.vue').default);
 Vue.component('users-component', require('./components/UsersComponent.vue').default);
+Vue.component('add-user-component', require('./components/AddUserComponent.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
