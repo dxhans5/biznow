@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use Illuminate\Http\Request;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use GuzzleHttp\Client;
 
@@ -29,6 +30,13 @@ class UsersController extends Controller
       $client = new Client();
       $res = $client->get($url);
 
+      // Cache the users
+      if(Cache::get('users')) {
+        return Cache::get('users');
+      } else {
+        Cache::add('users', json_encode(json_decode($res->getBody())), now()->addSeconds(60));
+      }
+
       return $res->getBody();
     }
 
@@ -48,6 +56,7 @@ class UsersController extends Controller
           'name' => $request->get('fullName'),
           'job' => $request->get('job')
         ]]);
+
         return $res->getBody();
      } catch (\Exception $e) {
          return $e->getResponse()->getBody(true);

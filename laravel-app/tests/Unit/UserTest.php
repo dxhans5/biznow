@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use Tests\TestCase;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -52,6 +53,8 @@ class UserTest extends TestCase
      */
     public function testSuccessfulUserFetch()
     {
+      Log::info('running testSuccesfulUserFetch');
+
       $res = $this->call('GET', '/get-users');
       $this->assertTrue($res->getStatusCode() === 200);
       $this->assertTrue(array_key_exists('data', json_decode($res->getContent(), true)));
