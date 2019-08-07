@@ -65,15 +65,18 @@ class UserTest extends TestCase
      */
     public function testSuccessfulUserAdd()
     {
-        $user = new \stdClass();
-        $user->name = 'Candle Man';
-        $user->job = 'Candlemaker';
-        $user->email = 'testing@test.com';
-        $user->password = '1234567890';
 
-        $res = $this->call('GET', '/add-user');
+        Session::start();
+
+        $user = array(
+            'fullName' => 'Candle Man',
+            'job' => 'Candlemaker',
+            '_token' => csrf_token()
+        );
+
+        $res = $this->call('POST', '/add-user', $user);
         $this->assertTrue($res->getStatusCode() === 200);
-        $this->assertTrue(array_key_exists('data', json_decode($res->getContent(), true)));
-        $this->assertNotEmpty(json_decode($res->getContent(), true)['data']);
+        $this->assertTrue(array_key_exists('id', json_decode($res->getContent(), true)));
+        $this->assertNotEmpty(json_decode($res->getContent(), true));
     }
 }

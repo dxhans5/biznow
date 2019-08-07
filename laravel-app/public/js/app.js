@@ -1854,16 +1854,61 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       errors: [],
-      modalShow: true
+      modalShow: true,
+      fullName: null,
+      job: null
     };
   },
   methods: {
     saveUser: function saveUser() {
-      console.log('add user clicked');
+      var _this = this;
+
+      axios.post('/add-user', {
+        fullName: this.fullName,
+        job: this.job
+      }).then(function (response) {
+        _this.errors = [];
+
+        if (response.data.error) {
+          _this.errors.push(response.data.error);
+        } else if (response.data.id) {
+          // Reload the users list and close modal
+          // Unfortunately it does not appear that regres will actually save
+          // new objects to their dummy data, so the user will not appear
+          // on the users list :(
+          _this.$parent.fetchUsers();
+
+          _this.closeModal();
+        }
+      });
     },
     closeModal: function closeModal() {
       console.log('close modal clicked');
@@ -2042,17 +2087,22 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   created: function created() {
-    var _this = this;
+    this.fetchUsers();
+  },
+  methods: {
+    fetchUsers: function fetchUsers() {
+      var _this = this;
 
-    axios.get('/get-users').then(function (response) {
-      _this.errors = [];
+      axios.get('/get-users').then(function (response) {
+        _this.errors = [];
 
-      if (response.data.error) {
-        _this.errors.push(response.data.error);
-      } else if (response.data.data) {
-        _this.users = response.data.data;
-      }
-    });
+        if (response.data.error) {
+          _this.errors.push(response.data.error);
+        } else if (response.data.data) {
+          _this.users = response.data.data;
+        }
+      });
+    }
   }
 });
 
@@ -65078,7 +65128,61 @@ var render = function() {
         expression: "modalShow"
       }
     },
-    [_vm._v("\n  ...\n\n  ")]
+    [
+      _c("form", { attrs: { id: "addUserForm" } }, [
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "fullName" } }, [_vm._v("Full Name")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.fullName,
+                expression: "fullName"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { id: "fullName", type: "text", name: "fullName" },
+            domProps: { value: _vm.fullName },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.fullName = $event.target.value
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("label", { attrs: { for: "job" } }, [_vm._v("Job")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.job,
+                expression: "job"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { id: "job", type: "text", name: "job" },
+            domProps: { value: _vm.job },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.job = $event.target.value
+              }
+            }
+          })
+        ])
+      ])
+    ]
   )
 }
 var staticRenderFns = []

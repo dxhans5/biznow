@@ -39,7 +39,10 @@ class AuthController extends Controller {
        try {
          $url = 'https://reqres.in/api/login';
          $client = new Client();
-         $res = $client->post($url, [RequestOptions::JSON => ['email' => $request->get('email'), 'password' => $request->get('password')]]);
+         $res = $client->post($url, [RequestOptions::JSON => [
+           'email' => $request->get('email'),
+           'password' => $request->get('password')
+        ]]);
 
          // It appears that reqres provides a token for a user for any password
          // provided. I would have provided an authentication check here had

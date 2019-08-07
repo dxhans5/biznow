@@ -54,15 +54,20 @@
         }
       },
       created: function () {
-        axios.get( '/get-users').then( response => {
-          this.errors = [];
+        this.fetchUsers();
+      },
+      methods: {
+        fetchUsers: function() {
+          axios.get( '/get-users').then( response => {
+            this.errors = [];
 
-          if (response.data.error) {
-            this.errors.push(response.data.error);
-          } else if (response.data.data) {
-            this.users = response.data.data;
-          }
-        })
+            if (response.data.error) {
+              this.errors.push(response.data.error);
+            } else if (response.data.data) {
+              this.users = response.data.data;
+            }
+          })
+        }
       }
     }
 </script>
